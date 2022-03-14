@@ -43,7 +43,8 @@
     
     
     let result = Math.floor((Math.random() * sentences.length))
-    document.body.innerHTML = JSON.stringify({ message: sentences[result]})
+    //document.body.innerHTML = JSON.stringify({ message: sentences[result]})
+    JSON.stringify(sentences[result].html())
         </script>
             
         
