@@ -22,9 +22,9 @@ const path = require('path')
 
 
 
-app.listen(port, () => {
-  console.log(`Example app listening on  https://localhost:${port}`)
-})
+app.listen(process.env.PORT || 3000, function(){
+    console.log("Server listening on port 3000, https://localhost:3000");
+  });
 app.get('/', (req, res) => {
     res.sendFile('index.html', { root: path.join(__dirname, './files')});
 })
