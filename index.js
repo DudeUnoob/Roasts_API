@@ -1,30 +1,16 @@
-// const app = require('express')();
-// const PORT = 8080;
-
-// app.listen(
-//     PORT,
-//     () => console.log(`API and server is alive on https://localhost:${PORT}`)
-// )
-
-// app.get('/jokes', (req, res) => {
-
-//     res.status(200).send({
-//         jokes:'lol',
-//         type:'mid'
-//     })
-// })
 const { sentences } = require('./roasts')
 const express = require('express');
-const { json } = require('express/lib/response');
+//const { json } = require('express/lib/response');
 const app = express()
 const port = 3000
-const path = require('path')
+const path = require('path');
+
 
 
 //app.use( express.json() )
 
-app.listen(process.env.PORT || 2000, function(){
-    console.log("Server listening on port 2000, http://localhost:2000");
+app.listen(process.env.PORT || 3000, function(){
+    console.log("Server listening on port 2000, http://localhost:3000");
   });
 app.get('/', (req, res) => {
     res.sendFile('index.html', { root: path.join(__dirname, './files')});
@@ -46,9 +32,11 @@ app.get('/roasts', (req, res) => {
 });
 
 app.get('/intro', (req,res) => {
-    res.sendFile('roast.html', { root: path.join(__dirname, './files')});
+    res.sendFile('intro.html', { root: path.join(__dirname, './files')});
+    
 })
 
 
-   
+
+
 
