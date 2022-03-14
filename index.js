@@ -36,7 +36,9 @@ app.get('/intro', (req,res) => {
     
 })
 
-
+// app.get('/files/favicon-32x32.png', (req, res) => {
+//     res.sendFile('favicon-32x32.png', { root: path.join(__dirname, './files')})
+// })
 
 
 
