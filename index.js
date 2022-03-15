@@ -215,6 +215,20 @@ app.get('/intro', (req,res) => {
     
 })
 
+app.get('/roasts', (req, res) => {
+    
+    
+    let result = Math.floor((Math.random() * sentences.length))
+    
+    //res.write('<h1>Hello</h1>')
+    res.status(200).send({
+         message: sentences[result],
+         tip: "Refresh the page to get a new roast!",
+     });
+
+    
+});
+
 app.listen(process.env.PORT || 3000, function(){
     console.log("Server listening on port 2000, http://localhost:3000");
   });
