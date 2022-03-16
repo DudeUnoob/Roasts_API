@@ -43,29 +43,36 @@ function hashAPIKey(apiKey) {
 
 app.get('/create', async (req, res) => {
 
-  const { apiKey, hashedAPIKey } = generateAPIKey();
-  let check = validator.validate(req.query.email)
-  if (check == false) {
-    return res.status(400).json({ message: "invalid email" })
+try{const { apiKey, hashedAPIKey } = generateAPIKey();
+let check = validator.validate(req.query.email)
+if (check == false) {
+  return res.status(400).json({ message: "invalid email" })
+}
+key.findOne({ email: req.query.email }, async (err, data) => {
+  if (data) {
+
+    return res.status(400).json({ message: 'There is already an api key registered for this email' })
+  } else {
+    new key({
+      key: apiKey,
+      email: req.query.email,
+      
+    }).save();
+
+    res.send({
+      Key: apiKey,
+      email: req.query.email,
+      message: 'Keep this api key safe'
+    })
   }
-  key.findOne({ key: apiKey, email: req.query.email }, async (err, data) => {
-    if (data) {
+})
 
-      data.save()
-    } else {
-      new key({
-        key: apiKey,
-        email: req.query.email,
-        
-      }).save();
-    }
-  })
 
-  res.send({
-    Key: apiKey,
-    email: req.query.email,
-    message: 'Keep this api key safe'
-  })
+} catch(error){
+  res.status(400).json({ message: error })
+}
+
+  
 })
 
 app.get('/api', async (req, res) => {
