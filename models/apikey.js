@@ -5,7 +5,7 @@ mongoose.connect(mongooseConnectionString).then(() => console.log(`Connected to 
 
 let Schema = new mongoose.Schema({
     key: String,
-    
+    email: String
 })
 
 module.exports = mongoose.model('key', Schema)
