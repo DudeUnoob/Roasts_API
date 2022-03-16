@@ -81,7 +81,7 @@ app.get('/api', async (req, res) => {
 
 
   try {
-    user = await key.findOne({ key: req.query.apiKey, email: req.query.email }).exec()
+    user = await key.findOne({ key: req.query.apiKey }).exec()
     if (user == null) {
       return res.status(404).json({ message: 'Cannot find an apikey for this user' })
     }
