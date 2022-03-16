@@ -1,0 +1,3 @@
+{
+    "mongooseConnectionString": "mongodb+srv://ZeroX:Balaram26@cluster0.b2lzi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+}

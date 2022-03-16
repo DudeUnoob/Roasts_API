@@ -22,7 +22,12 @@ let sentences= [
     'If I wanted to kill myself, I would simply jump from your ego to your IQ.',
     'I can’t wait to spend my whole life without you.',
     'Whoever told you to be yourself, gave you a bad advice.',
-    "They should classify you with speed's disease"
+    "They should classify you with speed's disease",
+    "https://canyouactually.com/wp-content/uploads/1WpQPkL.png",
+    "They say beauty is on the inside. You better hope that's true",
+    "They say people get what they deserve. In your case it's a participation trophy",
+    "You're so ugly your portraits hang themselves.",
+    "There's no vaccine for stupidity"
      ]
 
      
