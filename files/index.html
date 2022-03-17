@@ -72,7 +72,16 @@
       transform: translate(-50%, -50%);
     }
 
+    p#intro {
+  animation: color-change 1s infinite;
+  font-size: large;
+}
 
+@keyframes color-change {
+  0% { color: #FFC42E; }
+  50% { color: blue; }
+  100% { color: #FFC42E; }
+}
 
     @keyframes slide {
       0% {
@@ -119,13 +128,12 @@
     <h1>Hello There!</h1>
     <p>Welcome to the Roast's API! create your API Key</p>
     <p> and access the API by reading the Docs!</p>
-    <button style="font-family: 'Fredoka', sans-serif;" onclick="window.location.href='https://github.com/dudeunoob'">Check out my Github! <i class="fa fa-github"
-        style="font-size:36px"></i></button>
-    <button style="font-family: 'Fredoka', sans-serif;" onclick="window.location.href='https://damodar-kamani.gitbook.io/roast-api/'">Click here for docs!<i
+    <button style="font-family: 'Fredoka', sans-serif;" onclick="window.location.href='/signup'">Sign Up! <i class="fa fa-sign-in" aria-hidden="true" style="font-size:36px"></i></button>
+    <button style="font-family: 'Fredoka', sans-serif;" onclick="window.location.href='https://damodar-kamani.gitbook.io/roast-api/'">Documentation!<i
         class="fa fa-github" style="font-size:36px"></i></button>
 
   </div>
-  <p>
+  <p id="intro">
     Head here for more <a href="/intro">info</a>
   </p>
 
