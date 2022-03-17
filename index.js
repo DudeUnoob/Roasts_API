@@ -6,6 +6,7 @@ const key = require('./models/apikey');
 const validator = require('email-validator');
 const { Schema } = require('./models/apikey');
 const router = express.Router()
+const nodemailer = require('nodemailer')
 
 app.use(
   express.json({
@@ -43,7 +44,8 @@ function hashAPIKey(apiKey) {
 
 app.get('/create', async (req, res) => {
 
-try{const { apiKey, hashedAPIKey } = generateAPIKey();
+try{
+  const { apiKey, hashedAPIKey } = generateAPIKey();
 let check = validator.validate(req.query.email)
 if (check == false) {
   return res.status(400).json({ message: "invalid email" })
@@ -56,14 +58,42 @@ key.findOne({ email: req.query.email }, async (err, data) => {
     new key({
       key: apiKey,
       email: req.query.email,
+      password: req.query.password
       
     }).save();
 
+    let transporter = nodemailer.createTransport({
+      host: 'smtp-mail.outlook.com',
+      port: 587,
+      auth: {
+        user: 'to.balaram@outlook.com',
+        pass: 'harekrsna123'
+      }
+    });
+    
+    let mailOptions = {
+      from: 'to.balaram@outlook.com',
+      to: req.query.email,
+      subject: 'API Key',
+      text: apiKey
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
     res.send({
-      Key: apiKey,
+      //Key: apiKey,
+      Key:'API key has been sent to your email please check your spam box, the sender is to.balaram@outlook.com',
       email: req.query.email,
       message: 'Keep this api key safe'
     })
+
+    
   }
 })
 
@@ -116,6 +146,21 @@ app.get('/', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, './files') });
 })
 
+app.get('/forgot', async(req, res) => {
+  try{
+  let user;
+  user = await key.findOne({ email: req.query.email, password: req.query.password }).select('key')
+
+  if(user == null){
+    user = 'No api keys match those credentials'
+  }
+  res.status(200).send(user)
+  } catch(err){
+    res.status(404).send({ message: 'No api keys match those credentials' })
+  }
+    
+  
+})
 
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server listening on port 2000, http://localhost:3000");
