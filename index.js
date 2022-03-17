@@ -7,13 +7,19 @@ const validator = require('email-validator');
 const { Schema } = require('./models/apikey');
 const router = express.Router()
 const nodemailer = require('nodemailer')
+const bodyParser = require('body-parser')
 
-app.use(
-  express.json({
-    verify: (req, res, buffer) => (req['rawBody'] = buffer),
-  })
-);
+// app.use(
+//   express.json({
+//     verify: (req, res, buffer) => (req['rawBody'] = buffer),
+//   })
+// );
 
+app.use(bodyParser.json())
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({
+    extended:true
+}))
 const apiKeys = {
   // apiKey : customerdata
   '123xyz': 'stripeCustomerId',
@@ -40,70 +46,119 @@ function hashAPIKey(apiKey) {
 
   return hashedAPIKey;
 }
-
-
-app.get('/create', async (req, res) => {
-
-try{
+app.get("/signup",(req,res)=>{
+  res.set({
+      "Allow-access-Allow-Origin": '*'
+  })
+  return res.redirect('signup.html');
+})
+app.post('/sign_up', async(req, res) => {
   const { apiKey, hashedAPIKey } = generateAPIKey();
-let check = validator.validate(req.query.email)
-if (check == false) {
-  return res.status(400).json({ message: "invalid email" })
-}
-key.findOne({ email: req.query.email }, async (err, data) => {
-  if (data) {
+  var name = req.body.name;
+    var email = req.body.email;
+    var phno = req.body.phno;
+    var password = req.body.password;
 
-    return res.status(400).json({ message: 'There is already an api key registered for this email' })
-  } else {
-    new key({
-      key: apiKey,
-      email: req.query.email,
-      password: req.query.password
-      
-    }).save();
+    var data = {
+        "name": name,
+        "email" : email,
+        "phno": phno,
+        "password" : password
+    }
 
-    let transporter = nodemailer.createTransport({
-      host: 'smtp-mail.outlook.com',
-      port: 587,
-      auth: {
-        user: 'to.balaram@outlook.com',
-        pass: 'harekrsna123'
-      }
-    });
-    
-    let mailOptions = {
-      from: 'to.balaram@outlook.com',
-      to: req.query.email,
-      subject: 'API Key',
-      text: apiKey
-    };
-    
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
+    // db.collection('users').insertOne(data,(err,collection)=>{
+    //     if(err){
+    //         throw err;
+    //     }
+    //     console.log("Record Inserted Successfully");
+    // });
+    // let user;
+    // user = await key.find({ email: req.body.email })
+    // if(user){
+    //   return res.status(400).json({ message:'already a user with that email'})
+    // }
+     
+    //await key.create({  email: req.body.email, password: req.body.password, key: apiKey })
+    key.findOne({ email: req.body.email }, async(err, data) => {
+      if(data) {
+        return res.status(400).json({ message: "There is already an account with this email" })
       } else {
-        console.log('Email sent: ' + info.response);
+        new key({
+          key: apiKey,
+          email: req.body.email,
+          password: req.body.password
+        }).save()
+        let transporter = nodemailer.createTransport({
+          host: 'smtp-mail.outlook.com',
+          port: 587,
+          auth: {
+            user: 'to.balaram@outlook.com',
+            pass: 'harekrsna123'
+          }
+        });
+        
+        let mailOptions = {
+          from: 'to.balaram@outlook.com',
+          to: req.body.email,
+          subject: 'API Key',
+          text: apiKey
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+        return res.redirect('signup_success.html')
       }
-    });
-
-    res.send({
-      //Key: apiKey,
-      Key:'API key has been sent to your email please check your spam box, the sender is to.balaram@outlook.com',
-      email: req.query.email,
-      message: 'Keep this api key safe'
     })
 
     
-  }
+    
 })
 
+// app.get('/create', async (req, res) => {
 
-} catch(error){
-  res.status(400).json({ message: error })
-}
+// try{
+//   const { apiKey, hashedAPIKey } = generateAPIKey();
+// let check = validator.validate(req.query.email)
+// if (check == false) {
+//   return res.status(400).json({ message: "invalid email" })
+// }
+// key.findOne({ email: req.query.email }, async (err, data) => {
+//   if (data) {
+
+//     return res.status(400).json({ message: 'There is already an api key registered for this email' })
+//   } else {
+//     new key({
+//       key: apiKey,
+//       email: req.query.email,
+//       password: req.query.password
+      
+//     }).save();
+
+    
+
+//     res.send({
+//       //Key: apiKey,
+//       Key:'API key has been sent to your email please check your spam box, the sender is to.balaram@outlook.com',
+//       email: req.query.email,
+//       message: 'Keep this api key safe'
+//     })
+
+    
+//   }
+// })
+
+
+// } catch(error){
+//   res.status(400).json({ message: error })
+// }
 
   
-})
+// })
 
 app.get('/api', async (req, res) => {
 
@@ -147,17 +202,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/forgot', async(req, res) => {
-  try{
+  
   let user;
   user = await key.findOne({ email: req.query.email, password: req.query.password }).select('key')
 
   if(user == null){
-    user = 'No api keys match those credentials'
+    res.status(400).json({message: 'no api keys match those credentials'})
+  } else {
+    res.send({ user })
   }
-  res.status(200).send(user)
-  } catch(err){
-    res.status(404).send({ message: 'No api keys match those credentials' })
-  }
+  
+   
     
   
 })
