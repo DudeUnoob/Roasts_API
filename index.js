@@ -92,13 +92,13 @@ app.post('/sign_up', async(req, res) => {
           host: 'smtp-mail.outlook.com',
           port: 587,
           auth: {
-            user: 'to.balaram@outlook.com',
-            pass: 'harekrsna123'
+            user: 'to.krishna@outlook.com',
+            pass: 'Balaram26'
           }
         });
         
         let mailOptions = {
-          from: 'to.balaram@outlook.com',
+          from: 'to.krishna@outlook.com',
           to: req.body.email,
           subject: 'API Key',
           text: apiKey
