@@ -203,18 +203,30 @@ app.get('/', (req, res) => {
 
 app.get('/forgot', async(req, res) => {
   
+  // let user;
+  // user = await key.findOne({ email: req.query.email, password: req.query.password }).select('key')
+
+  // if(user == null){
+  //   res.status(400).json({message: 'no api keys match those credentials'})
+  // } else {
+  //   res.send({ user })
+  // } 
+  res.set({
+    "Allow-access-Allow-Origin": "*"
+    
+  })
+  return res.redirect('forgot.html')
+})
+
+app.post('/for_got', async(req, res) => {
   let user;
-  user = await key.findOne({ email: req.query.email, password: req.query.password }).select('key')
+  user = await key.findOne({ email: req.body.email, password: req.body.password }).select('key')
 
   if(user == null){
-    res.status(400).json({message: 'no api keys match those credentials'})
+    res.status(400).json({ message: 'no api keys match these credentials' })
   } else {
-    res.send({ user })
+    res.send(user)
   }
-  
-   
-    
-  
 })
 
 app.listen(process.env.PORT || 3000, function () {
