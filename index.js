@@ -27,7 +27,7 @@ const apiKeys = {
 
 
 function generateAPIKey() {
-  const { randomBytes } = require('crypto');
+  const { randomBytes, KeyObject } = require('crypto');
   const apiKey = randomBytes(16).toString('hex');
   const hashedAPIKey = hashAPIKey(apiKey);
 
@@ -159,6 +159,27 @@ app.post('/sign_up', async(req, res) => {
 
   
 // })
+
+app.get("/change",(req,res)=>{
+  res.set({
+      "Allow-access-Allow-Origin": '*'
+  })
+  return res.redirect('changepassword.html');
+})
+
+app.post('/change_password', async(req, res) => {
+  let user;
+
+  user = await key.findOne({ email: req.body.email, password: req.body.password })
+
+  if(user == null){
+    return res.status(404).json({ message: "No account matches these credentials" })
+  } //else {
+  //   key.findOneAndUpdate({ password: req.body.new_password })
+  // }
+  await key.findOneAndUpdate({ email: req.body.email, password: req.body.password }, { password: req.body.new_password })
+  return res.redirect('changepasswordsuccess.html')
+})
 
 app.get('/api', async (req, res) => {
 
