@@ -8,18 +8,31 @@ const { Schema } = require('./models/apikey');
 const router = express.Router()
 const nodemailer = require('nodemailer')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const sessions = require('express-session')
 
 // app.use(
 //   express.json({
 //     verify: (req, res, buffer) => (req['rawBody'] = buffer),
 //   })
 // );
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use(sessions({
+  secret:'API Roast',
 
+  }));
+let session;
 app.use(bodyParser.json())
+const oneDay = 1000 * 60 * 60 * 24;
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({
-    extended:true
-}))
+app.use(sessions({
+  secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+  saveUninitialized:true,
+  cookie: { maxAge: oneDay },
+  resave: false
+}));
+
 const apiKeys = {
   // apiKey : customerdata
   '123xyz': 'stripeCustomerId',
@@ -184,13 +197,13 @@ app.post('/change_password', async(req, res) => {
 app.get('/api', async (req, res) => {
 
   let user;
-
-
+  session = req.session
   try {
-    user = await key.findOne({ key: req.query.apiKey }).exec()
+    
+    user = await key.findOne({ key: req.query.apiKey }).exec() || session.userid
     if (user == null) {
       return res.status(404).json({ message: 'Cannot find an apikey for this user' })
-    }
+    } 
     let result = Math.floor((Math.random() * sentences.length))
 
     //res.write('<h1>Hello</h1>')
@@ -198,6 +211,7 @@ app.get('/api', async (req, res) => {
       message: sentences[result],
       tip: "Refresh the page to get a new roast!",
     });
+
 
   } catch (err) {
     return res.status(400).json({ message: err.message })
@@ -222,6 +236,34 @@ app.get('/', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, './files') });
 })
 
+app.get('/login', async(req, res) => {
+  res.set({
+    "Allow-access-Allow-Origin": "*"
+    
+  })
+  session=req.session;
+    if(session.userid){
+        res.send('<a href="/logout">logout here</a>');
+    } else
+  return res.redirect('login.html')
+})
+app.post('/log_in', async(req, res) => {
+  let user;
+  user = await key.findOne({ email: req.body.email, password: req.body.password })
+  if(user == null){
+    return res.status(400).json({ message: 'No user found with those credentials' })
+  } else{
+    session = req.session;
+    session.userid = req.body.email;
+    console.log(req.session)
+    return res.redirect('success_login.html')
+  }
+})
+app.get('/logout',(req,res) => {
+  req.session.destroy();
+  console.log(`Destroyed Session at ${Date(Date.now())}`)
+  res.redirect('/');
+});
 app.get('/forgot', async(req, res) => {
   
   // let user;
@@ -251,5 +293,5 @@ app.post('/for_got', async(req, res) => {
 })
 
 app.listen(process.env.PORT || 3000, function () {
-  console.log("Server listening on port 2000, http://localhost:3000");
+  console.log("Server listening on port 3000, http://localhost:3000");
 });
