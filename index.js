@@ -19,8 +19,10 @@ const sessions = require('express-session')
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(sessions({
-  secret:'API Roast',
-
+  name:'API Roast',
+  secret:'theapibestroast2022',
+  resave: true,
+  saveUninitialized: true
   }));
 let session;
 app.use(bodyParser.json())
@@ -206,12 +208,10 @@ app.get('/api', async (req, res) => {
     } 
     let result = Math.floor((Math.random() * sentences.length))
 
-    //res.write('<h1>Hello</h1>')
     res.send({
       message: sentences[result],
       tip: "Refresh the page to get a new roast!",
     });
-
 
   } catch (err) {
     return res.status(400).json({ message: err.message })

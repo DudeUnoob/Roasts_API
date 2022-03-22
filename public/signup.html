@@ -154,7 +154,7 @@
 
     .content {
       background-color: rgba(255, 255, 255, .8);
-      border-radius: .25em;
+      border-radius: 15px;
       box-shadow: 0 0 .25em rgba(0, 0, 0, .25);
       box-sizing: border-box;
       left: 50%;
@@ -236,17 +236,17 @@
         </div>
         <div class="col-md-6 main">
           <form action="/sign_up" method="POST">
-            <h2 id="main">SignUp Form</h2>
+            <h2 id="main" style="font-family: 'Fredoka', sans-serif;">SignUp Form</h2>
 
-            <input type="text" class="box" id="email" name="email" placeholder="Email" required />
+            <input type="text" style="font-family: 'Fredoka', sans-serif;" class="box" id="email" name="email" placeholder="Email" required />
             <br>
 
-            <input type="password" class="box" id="password" name="password" placeholder="Password" required />
+            <input type="password" style="font-family: 'Fredoka', sans-serif;" class="box" id="password" name="password" placeholder="Password" required />
             <br>
-            <input type="password" class="box" id="confirm_password" name="confirm_password"
+            <input type="password" style="font-family: 'Fredoka', sans-serif;" class="box" id="confirm_password" name="confirm_password"
               placeholder="Confirm Password" required />
             <br>
-            <input type="submit" value="Submit" id="submit" />
+            <input type="submit" value="Submit" style="font-family: 'Fredoka', sans-serif;" id="submit" />
           </form>
           <script>
             let password = document.getElementById('password')
@@ -262,6 +262,7 @@
             password.onchange = validatePassword;
             confirm_password.onkeyup = validatePassword;
           </script>
+          <a style="font-family: 'Fredoka', sans-serif;" href="/login">Login Here</a>
         </div>
         <div class="col-md-3">
         </div>
