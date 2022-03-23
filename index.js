@@ -200,6 +200,7 @@ app.get('/api', async (req, res) => {
 
   let user;
   session = req.session
+ 
 
     if(req.session.views){
       user = await key.findOne({ key: req.query.apiKey }).exec()
@@ -229,7 +230,7 @@ app.get('/api', async (req, res) => {
   
     }else{
       req.session.views = 1
-      res.redirect(`/api`)
+      res.redirect(`/api?apiKey=${req.query.apiKey}`)
     }
   
 });
