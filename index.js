@@ -210,7 +210,7 @@ app.get('/api', async (req, res) => {
       req.session.views++
 
       let views = await key.findOne({ key: req.query.apiKey })
-      if(views.views == null){
+      if(views.views == null || session.userid == null){
         views.views = 0
       }
       if(req.session.views > views.views) {
