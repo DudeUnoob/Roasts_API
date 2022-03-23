@@ -204,7 +204,7 @@ app.get('/api', async (req, res) => {
   if(session.userid){
   let result = Math.floor((Math.random() * sentences.length))
 
-    res.send({
+    return res.send({
       message: sentences[result],
       tip: "Refresh the page to get a new roast!",
     });
