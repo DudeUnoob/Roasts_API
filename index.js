@@ -200,6 +200,16 @@ app.get('/api', async (req, res) => {
 
   let user;
   session = req.session
+  
+  if(session.userid){
+  let result = Math.floor((Math.random() * sentences.length))
+
+    res.send({
+      message: sentences[result],
+      tip: "Refresh the page to get a new roast!",
+    });
+  } 
+  if(!session.userid) return;
  
 
     if(req.session.views){
