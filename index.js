@@ -230,7 +230,7 @@ app.get('/api', async (req, res) => {
   
     }else{
       req.session.views = 1
-      res.redirect(`/api?apiKey=${req.query.apiKey}`)
+      res.redirect(`/api`)
     }
   
 });
