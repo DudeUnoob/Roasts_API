@@ -200,23 +200,50 @@ app.get('/api', async (req, res) => {
 
   let user;
   session = req.session
-  try {
+ 
+
+    if(req.session.views){
+      user = await key.findOne({ key: req.query.apiKey }).exec() || session.userid
+      if (user == null) {
+        return res.status(404).json({ message: 'Cannot find an apikey for this user' })
+      } 
+      req.session.views++
+
+      let views = await key.findOne({ key: req.query.apiKey })
+      if(views.views == null){
+        views.views = 0
+      }
+      if(req.session.views > views.views) {
+        await key.findOneAndUpdate({ key: req.query.apiKey}, {views: req.session.views})
+        console.log(views)
+      }
     
-    user = await key.findOne({ key: req.query.apiKey }).exec() || session.userid
-    if (user == null) {
-      return res.status(404).json({ message: 'Cannot find an apikey for this user' })
-    } 
+    
     let result = Math.floor((Math.random() * sentences.length))
 
     res.send({
       message: sentences[result],
       tip: "Refresh the page to get a new roast!",
     });
-
-  } catch (err) {
-    return res.status(400).json({ message: err.message })
-  }
+    // res.write('<p>' + req.session.views + '</p>')
+    // res.end()
+  
+    }else{
+      req.session.views = 1
+      res.redirect(`/api?apiKey=${req.query.apiKey}`)
+    }
+  
 });
+
+app.get('/all', async (req, res) => {
+  try {
+    const users = await key.find().select('email')
+    res.json(users)
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+})
+
 
 app.get('/all', async (req, res) => {
   try {

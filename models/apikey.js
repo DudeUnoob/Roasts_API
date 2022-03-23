@@ -6,7 +6,8 @@ mongoose.connect(mongooseConnectionString).then(() => console.log(`Connected to 
 let Schema = new mongoose.Schema({
     key: String,
     email: String,
-    password: String
+    password: String,
+    views: Number,
 })
 
 module.exports = mongoose.model('key', Schema)
