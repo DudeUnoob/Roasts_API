@@ -200,16 +200,6 @@ app.get('/api', async (req, res) => {
 
   let user;
   session = req.session
-  
-  if(session.userid){
-  let result = Math.floor((Math.random() * sentences.length))
-
-    return res.send({
-      message: sentences[result],
-      tip: "Refresh the page to get a new roast!",
-    });
-  } 
-  if(!session.userid) return;
  
 
     if(req.session.views){
@@ -220,7 +210,6 @@ app.get('/api', async (req, res) => {
       req.session.views++
 
       let views = await key.findOne({ key: req.query.apiKey })
-      
       if(views.views == null){
         views.views = 0
       }
