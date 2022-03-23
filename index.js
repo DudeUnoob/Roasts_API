@@ -210,9 +210,7 @@ app.get('/api', async (req, res) => {
       req.session.views++
 
       let views = await key.findOne({ key: req.query.apiKey })
-      if(!views){
-        return;
-      }
+      
       if(views.views == null){
         views.views = 0
       }
