@@ -203,13 +203,16 @@ app.get('/api', async (req, res) => {
  
 
     if(req.session.views){
-      user = await key.findOne({ key: req.query.apiKey }).exec()
-      if (user == null) {
-        return res.status(404).json({ message: 'Cannot find an apikey for this user' })
-      } 
+     // user = await key.findOne({ key: req.query.apiKey }).exec()
+     // if (user == null) {
+       // return res.status(404).json({ message: 'Cannot find an apikey for this user' })
+     // } 
       req.session.views++
 
       let views = await key.findOne({ key: req.query.apiKey })
+      if(views == null){
+        return res.status(404).json({ message: 'Cannot find an apikey for this user' })
+      }
       if(views.views == null){
         views.views = 0
       }
