@@ -203,20 +203,25 @@ app.get('/api', async (req, res) => {
  
 
     if(req.session.views){
-      user = await key.findOne({ key: req.query.apiKey }).exec() || session.userid
-      if (user == null) {
-        return res.status(404).json({ message: 'Cannot find an apikey for this user' })
-      } 
+     // user = await key.findOne({ key: req.query.apiKey }).exec()
+     // if (user == null) {
+       // return res.status(404).json({ message: 'Cannot find an apikey for this user' })
+     // } 
       req.session.views++
 
       let views = await key.findOne({ key: req.query.apiKey })
+      if(views == null){
+        return res.status(404).json({ message: 'Cannot find an apikey for this user' })
+      }
       if(views.views == null){
         views.views = 0
       }
-      if(req.session.views > views.views) {
-        await key.findOneAndUpdate({ key: req.query.apiKey}, {views: req.session.views})
-        console.log(views)
-      }
+      // if(req.session.views > views.views) { 
+      //   await key.findOneAndUpdate({ key: req.query.apiKey}, {views: req.session.views})
+      //   console.log(views)
+      // }
+      let totalViews = views.views + 1
+      await key.findOneAndUpdate({ key: req.query.apiKey}, { views: totalViews })
     
     
     let result = Math.floor((Math.random() * sentences.length))
