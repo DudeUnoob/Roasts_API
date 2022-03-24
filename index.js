@@ -11,6 +11,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const ejs = require('ejs')
 const sessions = require('express-session')
+const multer = require('multer')
 
 // app.use(
 //   express.json({
@@ -271,8 +272,27 @@ app.get('/profile', async(req, res) => {
 } else {
   return res.redirect('/login')
 }
-
 })
+// const storage = multer.diskStorage({ 
+//   destination: (req, file, cb) => {
+//     cb(null, 'Images')
+//   },
+
+//   filename: (req, file, cb) => {
+//     console.log(file)
+//     cb(null, Date.now() + path.extname(file.originalname))
+//   }
+// })
+
+// const upload = multer({ storage: storage })
+// app.get('/upload', async(req, res) => {
+//   // res.sendFile('img.html', { root: path.join(__dirname, './files') });
+//   res.render('upload')
+  
+// })
+// app.post('/upload',upload.single('image'), async(req, res) => {
+//   res.send('Image uploaded')
+// })
 
 app.get('/intro', (req, res) => {
   res.sendFile('intro.html', { root: path.join(__dirname, './files') });
@@ -330,10 +350,10 @@ app.get('/forgot', async(req, res) => {
 
 app.post('/for_got', async(req, res) => {
   let user;
-  user = await key.findOne({ email: req.body.email, password: req.body.password }).select('key')
+  user = await key.findOne({ email: req.body.email, key: req.body.apiKey }).select('password')
 
   if(user == null){
-    res.status(400).json({ message: 'no api keys match these credentials' })
+    res.status(400).json({ message: 'Nothing matches these credentials' })
   } else {
     res.send(user)
   }
