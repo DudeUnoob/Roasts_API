@@ -1,12 +1,42 @@
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Profile</title>
-    </head>
-    <body>
-        <h1>Hello world</h1>
-       <% email.forEach(data => { %>
-           <p><%= data.email %></p>
-       <% }) %>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet">
+    <title>Profile</title>
+</head>
+
+<body>
+
+
+    <h1 style="font-family: 'Fredoka', sans-serif; margin-left: 15px;" >Profile</h1>
+    <% emails.forEach(email=> { %>
+        <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;" >Email: <%= email.email %>
+        </p>
+        <p style="font-family: 'Fredoka', sans-serif;margin-left: 15px; ">API Requests: <%= email.views %>
+        </p>
+
+        <% }) %>
+
+            <div class="col-md-6 main">
+                <form action="/change_password" method="POST">
+                    <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Change Password</h2>
+
+                    <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="email" name="email"
+                        placeholder="Email" required />
+                    <br>
+
+                    <input style="font-family: 'Fredoka', sans-serif;" type="password" class="box" id="password"
+                        name="password" placeholder="Password" required />
+                    <br>
+                    <input style="font-family: 'Fredoka', sans-serif;" type="password" class="box" id="new_password"
+                        name="new_password" placeholder="New Password" required />
+                    <br>
+                    <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
+                </form>
+</body>
+
 </html>

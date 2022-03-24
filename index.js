@@ -9,6 +9,7 @@ const router = express.Router()
 const nodemailer = require('nodemailer')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const ejs = require('ejs')
 const sessions = require('express-session')
 
 // app.use(
@@ -249,14 +250,28 @@ app.get('/all', async (req, res) => {
   }
 })
 
+app.set('view engine','ejs')
 
-app.get('/all', async (req, res) => {
-  try {
-    const users = await key.find().select('email')
-    res.json(users)
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
+app.get('/profile', async(req, res) => {
+  
+  // let 
+  
+  // res.render('profile', {
+  //   email: data
+  // })
+  session = req.session
+  
+  
+  if(session.userid){
+  key.find({ email: req.session.userid } , function(err, email) {
+    res.render('profile', {
+      emails: email
+    })
+  })
+} else {
+  return res.redirect('/login')
+}
+
 })
 
 app.get('/intro', (req, res) => {
