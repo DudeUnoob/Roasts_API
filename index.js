@@ -93,17 +93,19 @@ app.post('/sign_up', async(req, res) => {
     // user = await key.find({ email: req.body.email })
     // if(user){
     //   return res.status(400).json({ message:'already a user with that email'})
+    
     // }
-     
+
     //await key.create({  email: req.body.email, password: req.body.password, key: apiKey })
-    key.findOne({ email: req.body.email }, async(err, data) => {
+    key.find({ email: req.body.email, username: req.body.username }, async(err, data) => {
       if(data) {
-        return res.status(400).json({ message: "There is already an account with this email" })
+        return res.status(400).json({ message: "There is already an account with this email or username" })
       } else {
         new key({
           key: apiKey,
           email: req.body.email,
-          password: req.body.password
+          password: req.body.password,
+          username: req.body.username
         }).save()
         let transporter = nodemailer.createTransport({
           host: 'smtp-mail.outlook.com',
@@ -113,14 +115,14 @@ app.post('/sign_up', async(req, res) => {
             pass: 'Balaram26'
           }
         });
-        
+
         let mailOptions = {
           from: 'to.krishna@outlook.com',
           to: req.body.email,
           subject: 'API Key',
           text: apiKey
         };
-        
+
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
             console.log(error);
@@ -132,8 +134,8 @@ app.post('/sign_up', async(req, res) => {
       }
     })
 
-    
-    
+
+
 })
 
 // app.get('/create', async (req, res) => {
@@ -153,10 +155,10 @@ app.post('/sign_up', async(req, res) => {
 //       key: apiKey,
 //       email: req.query.email,
 //       password: req.query.password
-      
+
 //     }).save();
 
-    
+
 
 //     res.send({
 //       //Key: apiKey,
@@ -165,7 +167,7 @@ app.post('/sign_up', async(req, res) => {
 //       message: 'Keep this api key safe'
 //     })
 
-    
+
 //   }
 // })
 
@@ -174,7 +176,7 @@ app.post('/sign_up', async(req, res) => {
 //   res.status(400).json({ message: error })
 // }
 
-  
+
 // })
 
 app.get("/change",(req,res)=>{
@@ -202,13 +204,13 @@ app.get('/api', async (req, res) => {
 
   let user;
   session = req.session
- 
+
 
     if(req.session.views){
      // user = await key.findOne({ key: req.query.apiKey }).exec()
      // if (user == null) {
        // return res.status(404).json({ message: 'Cannot find an apikey for this user' })
-     // } 
+     // }
       req.session.views++
 
       let views = await key.findOne({ key: req.query.apiKey })
@@ -218,14 +220,14 @@ app.get('/api', async (req, res) => {
       if(views.views == null){
         views.views = 0
       }
-      // if(req.session.views > views.views) { 
+      // if(req.session.views > views.views) {
       //   await key.findOneAndUpdate({ key: req.query.apiKey}, {views: req.session.views})
       //   console.log(views)
       // }
       let totalViews = views.views + 1
       await key.findOneAndUpdate({ key: req.query.apiKey}, { views: totalViews })
-    
-    
+
+
     let result = Math.floor((Math.random() * sentences.length))
 
     res.send({
@@ -234,12 +236,12 @@ app.get('/api', async (req, res) => {
     });
     // res.write('<p>' + req.session.views + '</p>')
     // res.end()
-  
+
     }else{
       req.session.views = 1
       res.redirect(`/api?apiKey=${req.query.apiKey}`)
     }
-  
+
 });
 
 app.get('/all', async (req, res) => {
@@ -254,15 +256,15 @@ app.get('/all', async (req, res) => {
 app.set('view engine','ejs')
 
 app.get('/profile', async(req, res) => {
-  
-  // let 
-  
+
+  // let
+
   // res.render('profile', {
   //   email: data
   // })
   session = req.session
-  
-  
+
+
   if(session.userid){
   key.find({ email: req.session.userid } , function(err, email) {
     res.render('profile', {
@@ -273,7 +275,7 @@ app.get('/profile', async(req, res) => {
   return res.redirect('/login')
 }
 })
-// const storage = multer.diskStorage({ 
+// const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
 //     cb(null, 'Images')
 //   },
@@ -288,7 +290,7 @@ app.get('/profile', async(req, res) => {
 // app.get('/upload', async(req, res) => {
 //   // res.sendFile('img.html', { root: path.join(__dirname, './files') });
 //   res.render('upload')
-  
+
 // })
 // app.post('/upload',upload.single('image'), async(req, res) => {
 //   res.send('Image uploaded')
@@ -306,7 +308,7 @@ app.get('/', (req, res) => {
 app.get('/login', async(req, res) => {
   res.set({
     "Allow-access-Allow-Origin": "*"
-    
+
   })
   session=req.session;
     if(session.userid){
@@ -332,7 +334,7 @@ app.get('/logout',(req,res) => {
   res.redirect('/');
 });
 app.get('/forgot', async(req, res) => {
-  
+
   // let user;
   // user = await key.findOne({ email: req.query.email, password: req.query.password }).select('key')
 
@@ -340,14 +342,22 @@ app.get('/forgot', async(req, res) => {
   //   res.status(400).json({message: 'no api keys match those credentials'})
   // } else {
   //   res.send({ user })
-  // } 
+  // }
   res.set({
     "Allow-access-Allow-Origin": "*"
-    
+
   })
   return res.redirect('forgot.html')
 })
 
+app.get('/search', (req, res) => {
+  key.find({} , async(err, data) => {
+    res.render('search',{
+      email: data,
+      requests: data
+    })
+  })
+})
 app.post('/for_got', async(req, res) => {
   let user;
   user = await key.findOne({ email: req.body.email, key: req.body.apiKey }).select('password')
