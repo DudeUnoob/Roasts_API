@@ -106,7 +106,8 @@ app.post('/sign_up', async(req, res) => {
           key: apiKey,
           email: req.body.email,
           password: req.body.password,
-          username: req.body.username
+          username: req.body.username,
+          date: Date(Date.now())
         }).save()
         let transporter = nodemailer.createTransport({
           host: 'smtp-mail.outlook.com',
@@ -375,7 +376,15 @@ app.post('/for_got', async(req, res) => {
     res.send(user)
   }
 })
-
+app.get('/user/:username/', async(req, res) => {
+  
+  key.find({ username: req.params.username } , async(err, data) => {
+    res.render('user', {
+      user: data,
+    })
+  })
+  
+})
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server listening on port 3000, http://localhost:3000");
 });

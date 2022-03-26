@@ -192,14 +192,13 @@
     }
 
     #myInput {
-      background-image: url('/css/searchicon.png');
-      background-position: 10px 12px;
-      background-repeat: no-repeat;
-      width: 100%;
-      font-size: 16px;
-      padding: 12px 20px 12px 40px;
-      border: 1px solid #ddd;
-      margin-bottom: 12px;
+      float: right;
+      padding: 6px;
+      border: none;
+      margin-top: 8px;
+      margin-right: 16px;
+      font-size: 17px;
+      border-radius: 15px;
     }
 
     #myUL {
@@ -236,7 +235,8 @@
     <a style="font-family: 'Fredoka', sans-serif;" href="/forgot">Forgot</a>
     <a style="font-family: 'Fredoka', sans-serif;" href="/login">Login/Logout</a>
     <a style="font-family: 'Fredoka', sans-serif;" href="/profile">Profile</a>
-    <input type="text" id="myInput" onkeyup="mySearch()" placeholder="Search for names.." title="Type in a name">
+    <input type="text" id="myInput" onkeyup="mySearch()" placeholder="Search for names.." title="Type in a name" >
+    
     <a style="font-family: 'Fredoka', sans-serif;" href="javascript:void(0);" class="icon" onclick="myFunction()">
       <i class="fa fa-bars"></i>
     </a>
@@ -251,33 +251,37 @@
       }
     }
     function mySearch() {
-    var input, filter, ul, li, a, i, txtValue;
-    
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    ul = document.getElementById("myUL");
-    li = ul.getElementsByTagName("li");
-    
-    for (i = 0; i < li.length; i++) {
+      var input, filter, ul, li, a, i, txtValue;
+
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("myUL");
+      li = ul.getElementsByTagName("li");
+
+      for (i = 0; i < li.length; i++) {
         a = li[i].getElementsByTagName("a")[0];
         txtValue = a.textContent || a.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
+          li[i].style.display = "";
         } else {
-            li[i].style.display = "none";
+          li[i].style.display = "none";
         }
-        if(!filter){
-            li[i].style.display = "none"
+        if (!filter) {
+          li[i].style.display = "none"
         }
+      }
     }
-}
-  </script>
-<ul id="myUL">
-  <% email.forEach(em => {  %>
-      <li style="display: none;"><a href="#"><%= em.username %></a></li>
-  <% }) %>
 
-</ul>
+  </script>
+  <ul id="myUL">
+    <% email.forEach(em=> { %>
+      <li style="display: none;"><a href="/user/<%= em.username %>">
+          <%= em.username %>
+        </a></li>
+
+      <% }) %>
+
+  </ul>
   <div class="bg"></div>
   <div class="bg bg2"></div>
   <div class="bg bg3"></div>

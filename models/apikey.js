@@ -8,7 +8,8 @@ let Schema = new mongoose.Schema({
     email: String,
     password: String,
     views: Number,
-    username: String
+    username: String,
+    date: String
 })
 
 module.exports = mongoose.model('key', Schema)

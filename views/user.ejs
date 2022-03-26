@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        
+        <% user.forEach(username => { %>
+            <h1 style="font-family: 'Fredoka', sans-serif; margin-left: 15px;"><%= username.username %> 's profile</h1>
+            <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">API Requests: <%= username.views %></p>
+            <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Account Created: <%= username.date %></p>
+      <%  }) %>
+    </body>
+</html>
