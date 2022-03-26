@@ -98,7 +98,7 @@ app.post('/sign_up', async(req, res) => {
     // }
 
     //await key.create({  email: req.body.email, password: req.body.password, key: apiKey })
-    key.findOne({ email: req.body.email, username: req.body.username }, async(err, data) => {
+    key.find({ email: req.body.email, username: req.body.username }, async(err, data) => {
       if(data) {
         return res.status(400).json({ message: "There is already an account with this email or username" })
       } else {
