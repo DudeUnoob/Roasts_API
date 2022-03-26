@@ -123,7 +123,17 @@
 
             <% }) %>
         </div>
+        <div>
+            <form action="/profilepicture" method="POST" style="margin-left: 15px;">
+                <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Profile Picture</h2>
+                <p style="font-family: 'Fredoka', sans-serif;">Put a link to a picture you want to set to your profile!</p>
 
+                <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="picture" name="picture"
+                    placeholder="Profile picture link" required />
+                <br>
+                <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
+            </form>
+        </div>
         <div class="col-md-6 main">
             <form action="/change_password" method="POST">
                 <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Change Password</h2>
@@ -145,16 +155,7 @@
         </div>
         
         
-        <div>
-            <form action="/profilepicture" method="POST">
-                <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Profile Picture</h2>
-
-                <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="picture" name="picture"
-                    placeholder="Profile picture link" required />
-                <br>
-                <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
-            </form>
-        </div>
+        
         <script>
             function myFunction() {
                 var checkBox = document.getElementById("myCheck");
