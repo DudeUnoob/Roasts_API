@@ -251,7 +251,7 @@ app.get('/api', async (req, res) => {
 
 app.get('/all', async (req, res) => {
   try {
-    const users = await key.find().select('email')
+    const users = await key.find({}).select('username')
     res.json(users)
   } catch (err) {
     res.status(500).json({ message: err.message })
