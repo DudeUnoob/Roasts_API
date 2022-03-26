@@ -302,9 +302,7 @@ app.get('/intro', (req, res) => {
 
 })
 
-app.get('/', (req, res) => {
-  res.sendFile('index.html', { root: path.join(__dirname, './files') });
-})
+
 
 app.get('/login', async(req, res) => {
   res.set({
@@ -354,6 +352,14 @@ app.get('/forgot', async(req, res) => {
 app.get('/search', (req, res) => {
   key.find({} , async(err, data) => {
     res.render('search',{
+      email: data,
+      requests: data
+    })
+  })
+})
+app.get('/', (req, res) => {
+  key.find({} , async(err, data) => {
+    res.render('index',{
       email: data,
       requests: data
     })
