@@ -80,6 +80,8 @@
                 text-align: left;
             }
         }
+
+        
     </style>
 </head>
 
@@ -97,17 +99,19 @@
             <i class="fa fa-bars"></i>
         </a>
     </div>
-
-    <h1 style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Profile <i class="fa fa-user"></i>
-    </h1>
     <% emails.forEach(email=> { %>
+        <h1 style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Profile <img src="<%= email.profilepicture %>" height="50" width="50" style="border-radius: 50%;"/>
+        </h1>
+
         <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Email: <%= email.email %>
         </p>
         <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Username: <%= email.username %>
         </p>
         <p style="font-family: 'Fredoka', sans-serif;margin-left: 15px; ">API Requests: <%= email.views %>
-        <p style="font-family: 'Fredoka', sans-serif;margin-left: 15px; ">Account Created: <%= email.date %></p>
+                <p style="font-family: 'Fredoka', sans-serif;margin-left: 15px; ">Account Created: <%= email.date %>
+                </p>
         </p>
+
 
         <div>
             <label for="myCheck">API Key:</label>
@@ -135,7 +139,20 @@
                     name="new_password" placeholder="New Password" required />
                 <br>
                 <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
-                <button style="font-family: 'Fredoka', sans-serif;" onclick="window.location.href='/forgot'">Forgot Password</button>
+                <button style="font-family: 'Fredoka', sans-serif;" onclick="window.location.href='/forgot'">Forgot
+                    Password</button>
+            </form>
+        </div>
+        
+        
+        <div>
+            <form action="/profilepicture" method="POST">
+                <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Profile Picture</h2>
+
+                <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="picture" name="picture"
+                    placeholder="Profile picture link" required />
+                <br>
+                <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
             </form>
         </div>
         <script>

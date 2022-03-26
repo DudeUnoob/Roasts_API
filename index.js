@@ -388,6 +388,12 @@ app.get('/user/:username/', async(req, res) => {
   })
   
 })
+app.post('/profilepicture', async(req, res) => {
+  let pfp;
+  session = req.session;
+  pfp = await key.findOneAndUpdate({ email: session.userid }, { profilepicture: req.body.picture })
+  return res.status(200).json({ message:"Profile picture updated"})
+})
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server listening on port 3000, http://localhost:3000");
 });
