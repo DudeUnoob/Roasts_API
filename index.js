@@ -322,12 +322,12 @@ app.get('/login', async(req, res) => {
 })
 app.post('/log_in', async(req, res) => {
   let user;
-  user = await key.findOne({ email: req.body.email, password: req.body.password })
+  user = await key.findOne({ email: req.body.email, password: req.body.password }) || await key.findOne({ username: req.body.email, password: req.body.password })
   if(user == null){
     return res.status(400).json({ message: 'No user found with those credentials' })
   } else{
     session = req.session;
-    session.userid = req.body.email;
+    session.userid = user.email;
     console.log(req.session)
     return res.redirect('success_login.html')
   }
