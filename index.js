@@ -13,6 +13,8 @@ const ejs = require('ejs')
 const sessions = require('express-session')
 const multer = require('multer')
 const bcrypt = require('bcrypt')
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
 
 // app.use(
@@ -401,6 +403,32 @@ app.post('/profilepicture', async(req, res) => {
   pfp = await key.findOneAndUpdate({ email: session.userid }, { profilepicture: req.body.picture })
   return res.status(200).json({ message:"Profile picture updated"})
 })
-app.listen(process.env.PORT || 3000, function () {
+
+// app.get('/:room', (req, res) => {
+//   session = req.session
+//   res.render('chat')
+//   var clients = 0;
+//   users = [];
+//   io.on('connection', function(socket){
+//     console.log('A user connected');
+//     socket.on('setUsername', function(data){
+//        console.log(data);
+//        if(users.indexOf(data) > -1){
+//           socket.emit('userExists', data + ' username is taken! Try some other username.');
+//        } else {
+//           users.push(data);
+//           socket.emit('userSet', {username: data});
+//        }
+//        console.log(data)
+//     });
+//     socket.on('msg', function(data){
+//        //Send message to everyone
+//        io.sockets.emit('newmsg', data);
+//     })
+//  });
+ 
+// })
+
+server.listen(process.env.PORT || 3000, function () {
   console.log("Server listening on port 3000, http://localhost:3000");
 });

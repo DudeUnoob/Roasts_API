@@ -88,8 +88,13 @@
         </a>
     </div>
     <% emails.forEach(email=> { %>
-        <h1 style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Profile <img src="<%= email.profilepicture %>" height="50" width="50" style="border-radius: 50%;"/>
-        </h1>
+        <% if (!email.profilepicture) { %>
+            <h1 style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Profile <img src="https://cdn.discordapp.com/attachments/852050037420195860/959887102559027260/unknown.png" height="50" width="50"></h1>  
+            <%} else { %>
+                <h1 style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Profile <img src="<%= email.profilepicture %>" height="50" width="50" style="border-radius: 50%;"/>
+                </h1>
+            <% } %>
+        
         <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Email: <%= email.email %>
         </p>
         <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Username: <%= email.username %>
