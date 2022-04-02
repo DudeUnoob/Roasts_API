@@ -10,7 +10,8 @@ let Schema = new mongoose.Schema({
     views: Number,
     username: String,
     date: String,
-    profilepicture: String
+    profilepicture: String,
+    bio: String
 })
 
 module.exports = mongoose.model('key', Schema)

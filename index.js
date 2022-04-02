@@ -380,6 +380,12 @@ app.post('/for_got', async(req, res) => {
     res.send(user)
   }
 })
+app.post('/bio', async(req, res) => {
+  let pfp;
+  session = req.session;
+  pfp = await key.findOneAndUpdate({ email: session.userid }, { bio: req.body.bio })
+  return res.status(200).json({ message:"bio updated"})
+})
 app.get('/user/:username/', async(req, res) => {
   
   key.find({ username: req.params.username } , async(err, data) => {

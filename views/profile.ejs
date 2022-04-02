@@ -94,10 +94,12 @@
         </p>
         <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Username: <%= email.username %>
         </p>
+        <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Bio: <%= email.bio %></p>
         <p style="font-family: 'Fredoka', sans-serif;margin-left: 15px; ">API Requests: <%= email.views %>
                 <p style="font-family: 'Fredoka', sans-serif;margin-left: 15px; ">Account Created: <%= email.date %>
                 </p>
         </p>
+        
         <div>
             <label for="myCheck">API Key:</label>
             <input type="checkbox" id="myCheck" onclick="myFunction()">
@@ -105,6 +107,17 @@
                 <%= email.key %>
             </p>
             <% }) %>
+        </div>
+        <div>
+            <form action="/bio" method="POST" style="margin-left: 15px;">
+                <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Bio</h2>
+                <p style="font-family: 'Fredoka', sans-serif;">Put a bio description!</p>
+
+                <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="bio" name="bio"
+                    placeholder="Bio description" required />
+                <br>
+                <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
+            </form>
         </div>
         <div>
             <form action="/profilepicture" method="POST" style="margin-left: 15px;">
