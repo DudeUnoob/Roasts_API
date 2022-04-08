@@ -1,37 +1,70 @@
 <!DOCTYPE html>
 <html>
-   <head><title>Hello world</title></head>
-   <script src="/socket.io/socket.io.js"></script>
-   <script>
-      let socket = io();
-      function setUsername(){
-         socket.emit('setUsername', document.getElementById('name').value);
-      };
-      var user;
-      socket.on('userExists', function(data){
-         document.getElementById('error-container').innerHTML = data;
-      });
-      socket.on('userSet', function(data){
-         user = data.username;
-         document.body.innerHTML = '<input type="text" id="message">\
+
+<head>
+   <title>Hello world</title>
+</head>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+
+   let socket = io();
+   function setUsername() {
+      socket.emit('setUsername', document.getElementById('name').value);
+   };
+   var user;
+   socket.on('userExists', function (data) {
+      document.getElementById('error-container').innerHTML = data;
+   });
+   socket.on('userSet', function (data) {
+      user = data.username;
+      document.body.innerHTML = '<input type="text" id="message">\
          <button type="button" name="button" onclick="sendMessage()">Send</button>\
          <div id="message-container"></div>';
-      });
-      function sendMessage(){
-         var msg = document.getElementById('message').value;
-         if(msg){
-            return socket.emit('msg', {message: msg, user: user});
-         }
+   });
+   function sendMessage() {
+      var msg = document.getElementById('message').value;
+      if (msg) {
+         return socket.emit('msg', { message: msg, user: user });
       }
-      socket.on('newmsg', function(data){
-         if(user){
-            document.getElementById('message-container').innerHTML +='<div><b>' + data.user + '</b>: ' + data.message + '</div>'
-         }
-      })
-   </script>
-   <body>
-      <div id="error-container"></div>
-      <input id="name" type="text" name="name" value="" placeholder="Enter your name!">
+   }
+   socket.on('newmsg', function (data) {
+      if (user) {
+         document.getElementById('message-container').innerHTML += '<div><b>' + data.user + '</b>: ' + data.message + '</div>'
+      }
+   })
+</script>
+
+<body>
+   <div id="error-container"></div>
+
+
+   <div>
+      <input id="name" type="text" name="name" value="<% emails.forEach(data => { %>
+
+         <%= data.username %>
+     <% }) %>" placeholder="Enter your name!">
+   </div>
+
+   <div>
       <button type="button" name="button" onclick="setUsername()">Let me chat!</button>
-      </body>
-   </html>
+   </div>
+   <div>
+      
+         <% emails.forEach(data => { %>
+            <% let here = data.message %>
+            
+            <% for(i = 0; i < here.length; i++){ %>
+               <br><%= data.username %>: <%= here[i] %></br>
+            <% } %>
+            
+            
+        <% }) %>
+      
+   </div>
+
+</body>
+
+</html>

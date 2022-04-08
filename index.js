@@ -397,6 +397,14 @@ app.get('/user/:username/', async(req, res) => {
   })
   
 })
+// app.post('/chatmsg', async(req, res) => {
+//   session = req.session
+//   emptyArray = []
+//   await key.findOneAndUpdate({ email: session.userid }, { message: emptyArray.push(req.body.message) })
+//   res.status(200).send({
+//     message:'worked'
+//   })
+// })
 app.post('/profilepicture', async(req, res) => {
   let pfp;
   session = req.session;
@@ -404,18 +412,25 @@ app.post('/profilepicture', async(req, res) => {
   return res.status(200).json({ message:"Profile picture updated"})
 })
 
-app.get('/:room', (req, res) => {
+app.get('/ok', (req, res) => {
   session = req.session
-  res.render('chat')
+  if(session.userid){
+  key.find({ email: session.userid }, async(err, data) => {
+    res.render('chat', {
+      emails: data
+    })
+
+  })
   
- 
+}
+
 })
 var clients = 0;
   users = [];
   io.on('connection', function(socket){
     console.log('A user connected');
     socket.on('setUsername', function(data){
-       console.log(data + 'here');
+       
        if(users.indexOf(data) > -1){
           socket.emit('userExists', data + ' username is taken! Try some other username.');
        } else {
@@ -423,14 +438,24 @@ var clients = 0;
           socket.emit('userSet', {username: data});
           
        }
-       console.log(data)
+       console.log(data + 'username')
     });
-    socket.on('msg', function(data){
+    socket.on('msg', async function(data){
+      console.log(session.userid)
+      let array = await key.find({ email: session.userid }).distinct('message')
+      console.log(array)
+      array.forEach(element => console.log(element))
        //Send message to everyone
        io.sockets.emit('newmsg', data);
-       console.log(data)
-    })
+       //let newArray = [array, data['message']]
+       console.log(data['message'])
+       await key.findOneAndUpdate({ email: session.userid }, { message: array.concat([data['message']])}).then(() => console.log()
+       //console.log()
+    )})
  });
+
+ 
+
 
 server.listen(process.env.PORT || 3000, function () {
   console.log("Server listening on port 3000, http://localhost:3000");

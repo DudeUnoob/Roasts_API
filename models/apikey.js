@@ -11,7 +11,8 @@ let Schema = new mongoose.Schema({
     username: String,
     date: String,
     profilepicture: String,
-    bio: String
+    bio: String,
+    message: Array
 })
 
 module.exports = mongoose.model('key', Schema)
