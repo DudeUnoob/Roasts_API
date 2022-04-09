@@ -109,7 +109,7 @@
         }
 
         button#notification {
-            background-color: #555;
+            background-color: #04AA6D;
             color: white;
             text-decoration: none;
             padding: 15px 26px;
@@ -124,6 +124,16 @@
 
         button#notification:hover {
             background: red;
+        }
+
+        span#badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            padding: 5px 10px;
+            border-radius: 50%;
+            background: red;
+            color: white;
         }
     </style>
 </head>
@@ -176,24 +186,28 @@
             <%= email.key %>
         </p>
     </div>
+    
+    
     <div>
-    <button id="notification" onclick="onMessage()"
-        style="font-family: 'Fredoka', sans-serif;margin-left: 15px;">Inbox<i
-        class="fa fa-bell-o" aria-hidden="true" style="font-size:20px"></i></button></button>
-    <div class="card2">
-        <div id="myDIV" style="display: none;" >
+        <button id="notification" onclick="onMessage()" 
+            style="font-family: 'Fredoka', sans-serif;margin-left: 15px;">Inbox<i class="fa fa-bell-o"
+                aria-hidden="true" style="font-size:20px"></i><span id="badge">
+                <%= email.newMessages.length %>
+            </span></button>
+        <div class="card2">
+            <div id="myDIV" style="display: none;">
 
-            <% let here=email.newMessages %>
-                <% for(i=0; i < here.length; i++ ){ %>
+                <% let here=email.newMessages %>
+                    <% for(i=0; i < here.length; i++ ){ %>
 
-                    <br>
-                    <p id="cardText" style="font-family: 'Fredoka', sans-serif;">
-                        <%= here[i] %>
-                    </p>
-                    <% } %>
+                        <br>
+                        <p id="cardText" style="font-family: 'Fredoka', sans-serif;">
+                            <%= here[i] %>
+                        </p>
+                        <% } %>
+            </div>
         </div>
     </div>
-</div>
     <% }) %>
         <div>
             <form action="/bio" method="POST" style="margin-left: 15px;">
@@ -260,8 +274,11 @@
             }
             function onMessage() {
                 var x = document.getElementById("myDIV");
+                let noti = document.getElementById('badge')
                 if (x.style.display === "none") {
                     x.style.display = "inline-block";
+                    
+                    noti.style.display = "none"
                 } else {
                     x.style.display = "none";
                 }

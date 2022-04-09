@@ -13,7 +13,7 @@ let Schema = new mongoose.Schema({
     profilepicture: String,
     bio: String,
     message: Array,
-    newMessages: Array
+    newMessages: Array,
 })
 
 module.exports = mongoose.model('key', Schema)
