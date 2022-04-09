@@ -5,11 +5,15 @@ const path = require('path');
 const key = require('./models/apikey');
 const validator = require('email-validator');
 const { Schema } = require('./models/apikey');
+const mongoose = require('mongoose')
 const router = express.Router()
 const nodemailer = require('nodemailer')
+const crypto = require("crypto")
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const ejs = require('ejs')
+const {GridFsStorage} = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
 const sessions = require('express-session')
 const multer = require('multer')
 const bcrypt = require('bcrypt')
@@ -23,7 +27,7 @@ const io = require('socket.io')(server);
 //   })
 // );
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit:'512kb' }));
 app.use(sessions({
   name:'API Roast',
   secret:'theapibestroast2022',
@@ -406,10 +410,12 @@ app.get('/user/:username/', async(req, res) => {
 //   })
 // })
 app.post('/profilepicture', async(req, res) => {
-  let pfp;
-  session = req.session;
-  pfp = await key.findOneAndUpdate({ email: session.userid }, { profilepicture: req.body.picture })
-  return res.status(200).json({ message:"Profile picture updated"})
+  session = req.session
+
+  await key.findOneAndUpdate({ email: session.userid }, { profilepicture: 'data:image/png;base64,'+ req.body.imageid })
+  res.status(200).send({
+    message:'updated profile picture successfully!'
+  })
 })
 
 // app.get('/ok', (req, res) => {
@@ -455,23 +461,24 @@ app.post('/profilepicture', async(req, res) => {
 //     )})
 //  });
 
- app.post('/message/:to', async(req, res) => {
-   session = req.session
-   console.log([req.body.message + ` from ${session.userid}`])
-   if(session.userid){
-     let array = await key.find({ email: req.params.to }).distinct('newMessages')
-     let conversion = await key.find({ email: req.params.to }).distinct('username')
-     console.log(array)
-     console.log(req.params.to)
-     let officialMessage = [`from: ` + session.userid + req.body.message]
-    await key.findOneAndUpdate({ email: req.params.to }, { newMessages: array.concat([`from ${conversion}: ` + req.body.message])}).then(() => console.log())
-    res.status(200).send({
-      message:'Sent message'
-    })
-   } else {
-     res.redirect('/login')
-   }
- })
+app.post('/message/:to', async(req, res) => {
+  session = req.session
+  console.log([req.body.message + ` from ${session.userid}`])
+  if(session.userid){
+    let array = await key.find({ email: req.params.to }).distinct('newMessages')
+    let conversion = await key.find({ email: session.userid }).distinct('username')
+    console.log(conversion)
+    let officialMessage = [`from: ` + conversion + req.body.message]
+   await key.findOneAndUpdate({ email: req.params.to }, { newMessages: array.concat([`from ${conversion}: ` + req.body.message])}).then(() => console.log())
+   res.status(200).send({
+     message:'Sent message'
+   })
+  } else {
+    res.redirect('/login')
+  }
+})
+
+
 
 
 server.listen(process.env.PORT || 3000, function () {

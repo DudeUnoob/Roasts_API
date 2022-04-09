@@ -136,6 +136,37 @@
             color: white;
         }
     </style>
+    <script>let base64String = "";
+  
+        function imageUploaded() {
+            var file = document.querySelector(
+                'input[type=file]')['files'][0];
+          
+            var reader = new FileReader();
+            console.log("next");
+              
+            reader.onload = function () {
+                base64String = reader.result.replace("data:", "")
+                    .replace(/^.+,/, "");
+          
+                imageBase64Stringsep = base64String;
+          
+                // alert(imageBase64Stringsep);
+                console.log(base64String);
+            }
+            reader.readAsDataURL(file);
+        }
+          
+        function displayString() {
+            console.log("Base64String about to be printed");
+            alert(base64String);
+            
+            
+        }
+        function complete(){
+            document.getElementById('imageid').value = base64String
+        }
+        </script>
 </head>
 
 <body>
@@ -221,15 +252,14 @@
             </form>
         </div>
         <div>
-            <form action="/profilepicture" method="POST" style="margin-left: 15px;">
-                <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Profile Picture</h2>
-                <p style="font-family: 'Fredoka', sans-serif;">Put a link to a picture you want to set to your profile!
-                </p>
-
-                <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="picture" name="picture"
-                    placeholder="Profile picture link" required />
+            <h1 style="font-family: 'Fredoka', sans-serif;margin-left: 15px;">Select Your Profile Picture</h1>
+            <form method="post" action="/profilepicture" style="margin-left: 15px;">
+                <input type="file" name="fileing" id="fileId"
+                
+                onchange="imageUploaded()">
+                <input type="hidden" name="imageid" id="imageid" value="" >
                 <br>
-                <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
+            <input type="submit" value="Submit" id="sumbit" onclick="complete()">
             </form>
         </div>
         <div class="col-md-6 main">
