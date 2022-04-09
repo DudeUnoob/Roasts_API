@@ -89,6 +89,42 @@
             background-color: #1ec98a;
             border-radius: 15px;
         }
+
+        .card2 {
+            box-shadow: 10px 5px 5px grey;
+            max-width: 300px;
+            margin-left: 15px;
+            text-align: left;
+            background-color: #1ec98a;
+            border-radius: 15px;
+            margin-top: 5px;
+            position: relative;
+            right: -1590px;
+            top: -275px;
+
+        }
+
+        p#cardText {
+            margin-left: 15px;
+        }
+
+        button#notification {
+            background-color: #555;
+            color: white;
+            text-decoration: none;
+            padding: 15px 26px;
+            position: relative;
+            display: inline-block;
+            border-radius: 15px;
+            box-shadow: 10px 5px 5px grey;
+            position: relative;
+            right: -1780px;
+            top: -275px;
+        }
+
+        button#notification:hover {
+            background: red;
+        }
     </style>
 </head>
 
@@ -139,71 +175,98 @@
         <p id="text" style="display:none">
             <%= email.key %>
         </p>
-        <% }) %>
     </div>
     <div>
-        <form action="/bio" method="POST" style="margin-left: 15px;">
-            <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Bio</h2>
-            <p style="font-family: 'Fredoka', sans-serif;">Put a bio description!</p>
+    <button id="notification" onclick="onMessage()"
+        style="font-family: 'Fredoka', sans-serif;margin-left: 15px;">Inbox<i
+        class="fa fa-bell-o" aria-hidden="true" style="font-size:20px"></i></button></button>
+    <div class="card2">
+        <div id="myDIV" style="display: none;" >
 
-            <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="bio" name="bio"
-                placeholder="Bio description" required />
-            <br>
-            <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
-        </form>
+            <% let here=email.newMessages %>
+                <% for(i=0; i < here.length; i++ ){ %>
+
+                    <br>
+                    <p id="cardText" style="font-family: 'Fredoka', sans-serif;">
+                        <%= here[i] %>
+                    </p>
+                    <% } %>
+        </div>
     </div>
-    <div>
-        <form action="/profilepicture" method="POST" style="margin-left: 15px;">
-            <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Profile Picture</h2>
-            <p style="font-family: 'Fredoka', sans-serif;">Put a link to a picture you want to set to your profile!</p>
+</div>
+    <% }) %>
+        <div>
+            <form action="/bio" method="POST" style="margin-left: 15px;">
+                <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Bio</h2>
+                <p style="font-family: 'Fredoka', sans-serif;">Put a bio description!</p>
 
-            <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="picture" name="picture"
-                placeholder="Profile picture link" required />
-            <br>
-            <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
-        </form>
-    </div>
-    <div class="col-md-6 main">
-        <form action="/change_password" method="POST">
-            <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Change Password</h2>
+                <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="bio" name="bio"
+                    placeholder="Bio description" required />
+                <br>
+                <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
+            </form>
+        </div>
+        <div>
+            <form action="/profilepicture" method="POST" style="margin-left: 15px;">
+                <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Profile Picture</h2>
+                <p style="font-family: 'Fredoka', sans-serif;">Put a link to a picture you want to set to your profile!
+                </p>
 
-            <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="email" name="email"
-                placeholder="Email" required />
-            <br>
+                <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="picture" name="picture"
+                    placeholder="Profile picture link" required />
+                <br>
+                <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
+            </form>
+        </div>
+        <div class="col-md-6 main">
+            <form action="/change_password" method="POST">
+                <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Change Password</h2>
 
-            <input style="font-family: 'Fredoka', sans-serif;" type="password" class="box" id="password" name="password"
-                placeholder="Password" required />
-            <br>
-            <input style="font-family: 'Fredoka', sans-serif;" type="password" class="box" id="new_password"
-                name="new_password" placeholder="New Password" required />
-            <br>
-            <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
-            <button style="font-family: 'Fredoka', sans-serif;" onclick="window.location.href='/forgot'">Forgot
-                Password</button>
-        </form>
-    </div>
+                <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="email" name="email"
+                    placeholder="Email" required />
+                <br>
+
+                <input style="font-family: 'Fredoka', sans-serif;" type="password" class="box" id="password"
+                    name="password" placeholder="Password" required />
+                <br>
+                <input style="font-family: 'Fredoka', sans-serif;" type="password" class="box" id="new_password"
+                    name="new_password" placeholder="New Password" required />
+                <br>
+                <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
+                <button style="font-family: 'Fredoka', sans-serif;" onclick="window.location.href='/forgot'">Forgot
+                    Password</button>
+            </form>
+        </div>
 
 
 
-    <script>
-        function myFunction() {
-            var checkBox = document.getElementById("myCheck");
-            var text = document.getElementById("text");
-            if (checkBox.checked == true) {
-                text.style.display = "inline-block";
-            } else {
-                text.style.display = "none";
+        <script>
+            function myFunction() {
+                var checkBox = document.getElementById("myCheck");
+                var text = document.getElementById("text");
+                if (checkBox.checked == true) {
+                    text.style.display = "inline-block";
+                } else {
+                    text.style.display = "none";
+                }
             }
-        }
-        function myNav() {
-            var x = document.getElementById("myTopnav");
-            if (x.className === "topnav") {
-                x.className += " responsive";
-            } else {
-                x.className = "topnav";
+            function myNav() {
+                var x = document.getElementById("myTopnav");
+                if (x.className === "topnav") {
+                    x.className += " responsive";
+                } else {
+                    x.className = "topnav";
+                }
             }
-        }
-    </script>
+            function onMessage() {
+                var x = document.getElementById("myDIV");
+                if (x.style.display === "none") {
+                    x.style.display = "inline-block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+        </script>
 </body>
 
 </html>

@@ -12,7 +12,8 @@ let Schema = new mongoose.Schema({
     date: String,
     profilepicture: String,
     bio: String,
-    message: Array
+    message: Array,
+    newMessages: Array
 })
 
 module.exports = mongoose.model('key', Schema)

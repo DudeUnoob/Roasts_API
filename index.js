@@ -412,49 +412,66 @@ app.post('/profilepicture', async(req, res) => {
   return res.status(200).json({ message:"Profile picture updated"})
 })
 
-app.get('/ok', (req, res) => {
-  session = req.session
-  if(session.userid){
-  key.find({ email: session.userid }, async(err, data) => {
-    res.render('chat', {
-      emails: data
-    })
+// app.get('/ok', (req, res) => {
+//   session = req.session
+//   let user = req.query.user
+//   if(session.userid){
+//   key.find({ email: session.userid }, async(err, data) => {
+//     res.render('chat', {
+//       emails: data
+//     })
 
-  })
+//   })
   
-}
+// }
 
-})
-var clients = 0;
-  users = [];
-  io.on('connection', function(socket){
-    console.log('A user connected');
-    socket.on('setUsername', function(data){
+// })
+// var clients = 0;
+//   users = [];
+//   io.on('connection', function(socket){
+//     console.log('A user connected');
+//     socket.on('setUsername', function(data){
        
-       if(users.indexOf(data) > -1){
-          socket.emit('userExists', data + ' username is taken! Try some other username.');
-       } else {
-          users.push(data);
-          socket.emit('userSet', {username: data});
+//        if(users.indexOf(data) > -1){
+//           socket.emit('userExists', data + ' username is taken! Try some other username.');
+//        } else {
+//           users.push(data);
+//           socket.emit('userSet', {username: data});
           
-       }
-       console.log(data + 'username')
-    });
-    socket.on('msg', async function(data){
-      console.log(session.userid)
-      let array = await key.find({ email: session.userid }).distinct('message')
-      console.log(array)
-      array.forEach(element => console.log(element))
-       //Send message to everyone
-       io.sockets.emit('newmsg', data);
-       //let newArray = [array, data['message']]
-       console.log(data['message'])
-       await key.findOneAndUpdate({ email: session.userid }, { message: array.concat([data['message']])}).then(() => console.log()
-       //console.log()
-    )})
- });
+//        }
+//        console.log(data + 'username')
+//     });
+//     socket.on('msg', async function(data){
+//       console.log(session.userid)
+//       let array = await key.find({ email: session.userid }).distinct('message')
+      
+//       //array.forEach(element => console.log(element))
+//        //Send message to everyone 
+//        io.sockets.emit('newmsg', data);
+//        //let newArray = [array, data['message']]
+//        console.log(data['message'])
+//        await key.findOneAndUpdate({ email: session.userid }, { message: array.concat([data['message']])}).then(() => console.log()
+//        //console.log()
+//     )})
+//  });
 
- 
+ app.post('/message/:to', async(req, res) => {
+   session = req.session
+   console.log([req.body.message + ` from ${session.userid}`])
+   if(session.userid){
+     let array = await key.find({ email: req.params.to }).distinct('newMessages')
+     let conversion = await key.find({ email: req.params.to }).distinct('username')
+     console.log(array)
+     console.log(req.params.to)
+     let officialMessage = [`from: ` + session.userid + req.body.message]
+    await key.findOneAndUpdate({ email: req.params.to }, { newMessages: array.concat([`from ${conversion}: ` + req.body.message])}).then(() => console.log())
+    res.status(200).send({
+      message:'Sent message'
+    })
+   } else {
+     res.redirect('/login')
+   }
+ })
 
 
 server.listen(process.env.PORT || 3000, function () {
