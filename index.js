@@ -200,7 +200,7 @@ app.get("/change",(req,res)=>{
 
 app.post('/change_password', async(req, res) => {
   let user;
-
+  
   user = await key.findOne({ email: req.body.email, password: req.body.password })
 
   if(user == null){
@@ -287,6 +287,16 @@ app.get('/profile', async(req, res) => {
   return res.redirect('/login')
 }
 })
+app.get('/profile/settings', (req, res) => {
+  session = req.session;
+  if(session.userid){
+    key.find({ email: session.userid }, async(err, data) => {
+      res.render('main', {
+        email: data
+      })
+    })
+  }
+})
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
 //     cb(null, 'Images')
@@ -369,12 +379,16 @@ app.get('/search', (req, res) => {
   })
 })
 app.get('/', (req, res) => {
-  key.find({} , async(err, data) => {
-    res.render('index',{
-      email: data,
-      requests: data
+  
+  
+    key.find({} , async(err, data) => {
+      res.render('index',{
+        email: data,
+        requests: data
+      })
     })
-  })
+  
+  
 })
 app.post('/for_got', async(req, res) => {
   let user;

@@ -134,36 +134,10 @@
                 <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
             </form>
         </div>
-        <div class="card" style="margin-left: 15px;">
-            <h1 style="font-family: 'Fredoka', sans-serif;margin-left: 15px;">Select Your Profile Picture</h1>
-            <form method="post" action="/profilepicture" style="margin-left: 15px;font-family: 'Fredoka', sans-serif;">
-                <input type="file" name="fileing" id="fileId" accept="image/*"
-                
-                onchange="imageUploaded()">
-                <input type="hidden" name="imageid" id="imageid" value="" >
-                <br>
-            <input type="submit" value="Submit" id="sumbit" onclick="complete()">
-            </form>
-            <img id="preview" src="" alt="Preview your profile picture" height="75" width="75" style="margin-bottom: 5px;">
-        </div>
-        <div class="card" style="margin-left: 15px;">
-            <form action="/change_password" method="POST">
-                <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Change Password</h2>
-
-                <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="email" name="email"
-                    placeholder="Email" required />
-                <br>
-
-                <input style="font-family: 'Fredoka', sans-serif;" type="password" class="box" id="password"
-                    name="password" placeholder="Password" required />
-                <br>
-                <input style="font-family: 'Fredoka', sans-serif;" type="password" class="box" id="new_password"
-                    name="new_password" placeholder="New Password" required />
-                <br>
-                <input style="font-family: 'Fredoka', sans-serif;" type="submit" value="Submit" id="submit" />
-                <button style="font-family: 'Fredoka', sans-serif;" onclick="window.location.href='/forgot'">Forgot
-                    Password</button>
-            </form>
+        
+        <div>
+            <button id="yo"style="position: absolute; left: 1850px;top: 5px;" onclick="window.location.href='/profile/settings'"><i
+                class="fa fa-cog" aria-hidden="true" style="font-size:36px"></i></button>
         </div>
 
 

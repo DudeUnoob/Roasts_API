@@ -104,6 +104,12 @@ button#notification {
     right: -1780px;
     top: -275px;
 }
+button#yo{
+    background-color: #04AA6D;
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+}
 
 button#notification:hover {
     background: red;
