@@ -53,6 +53,7 @@
 </head>
 
 <body>
+    <% emails.forEach(email=> { %>
     <div class="topnav" id="myTopnav">
         <a style="font-family: 'Fredoka', sans-serif;" href="/" class="active">Home</a>
         <a style="font-family: 'Fredoka', sans-serif;" href="/intro">Intro</a>
@@ -62,12 +63,17 @@
         <a style="font-family: 'Fredoka', sans-serif;" href="/forgot">Forgot</a>
         <a style="font-family: 'Fredoka', sans-serif;" href="/login">Login/Logout</a>
         <a style="font-family: 'Fredoka', sans-serif;" href="/profile">Profile</a>
+        <div>
+            <button id="yo" style="float: right;margin-top: 5px;margin-right: 5px;"  onclick="window.location.href='/profile/settings'"><i
+                class="fa fa-cog" aria-hidden="true" style="font-size:36px"></i></button>
+        </div>
+        
         <a style="font-family: 'Fredoka', sans-serif;" href="javascript:void(0);" class="icon" onclick="myNav()">
             <i class="fa fa-bars"></i>
         </a>
     </div>
     <div class="card" style="margin-left: 15px;">
-        <% emails.forEach(email=> { %>
+        
             <% if (!email.profilepicture) { %>
                 <h1 style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Profile <img
                         src="https://cdn.discordapp.com/attachments/852050037420195860/959887102559027260/unknown.png"
@@ -101,7 +107,6 @@
         </p>
     </div>
     
-    
     <div>
         <button id="notification" onclick="onMessage()" 
             style="font-family: 'Fredoka', sans-serif;margin-left: 15px;">Inbox<i class="fa fa-bell-o"
@@ -122,6 +127,7 @@
             </div>
         </div>
     </div>
+    
     <% }) %>
         <div class="card" style="margin-left: 15px;">
             <form action="/bio" method="POST" style="margin-left: 15px;">
@@ -135,10 +141,7 @@
             </form>
         </div>
         
-        <div>
-            <button id="yo"style="position: absolute; left: 1850px;top: 5px;" onclick="window.location.href='/profile/settings'"><i
-                class="fa fa-cog" aria-hidden="true" style="font-size:36px"></i></button>
-        </div>
+       
 
 
 
