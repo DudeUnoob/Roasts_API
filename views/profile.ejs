@@ -124,7 +124,7 @@
     </div>
     
     
-    <% }) %>
+    
         <div class="card" style="margin-left: 15px;">
             <form action="/bio" method="POST" style="margin-left: 15px;">
                 <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Bio</h2>
@@ -137,8 +137,25 @@
             </form>
         </div>
         
-       
-
+        <div>
+            <button id="ok" onclick="checkMessage()" 
+                style="font-family: 'Fredoka', sans-serif;margin-left: 15px;">Messages Sent<i class="fa fa-bell-o"
+                    aria-hidden="true" style="font-size:20px"></i><span id="boomer">
+                    <%= email.message.length %>
+                </span></button>
+            <div class="card3">
+                <div id="lol" style="display: none;">
+                    <% let ok=email.message %>
+                        <% for(i=0; i < ok.length; i++ ){ %>
+                            <br>
+                            <p id="cardText" style="font-family: 'Fredoka', sans-serif;">
+                                <%= ok[i] %>
+                            </p>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+        <% }) %>
 
 
         <script>
@@ -162,6 +179,17 @@
             function onMessage() {
                 var x = document.getElementById("myDIV");
                 let noti = document.getElementById('badge')
+                if (x.style.display === "none") {
+                    x.style.display = "inline-block";
+                    
+                    noti.style.display = "none"
+                } else {
+                    x.style.display = "none";
+                }
+            }
+            function checkMessage() {
+                var x = document.getElementById("lol");
+                let noti = document.getElementById('boomer')
                 if (x.style.display === "none") {
                     x.style.display = "inline-block";
                     

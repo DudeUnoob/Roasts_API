@@ -203,16 +203,7 @@ span#badge {
                     Password</button>
             </form>
         </div>
-        <div>
-            <ol>
-            <% email.forEach(data => { %>
-                <% let here=data.message %>
-                    <% for(i=0; i < here.length; i++ ){ %>
-                        <li><%= here[i] %></li>
-                    <% } %>
-           <% }) %>
-        </ol>
-        </div>
+        
         <div>
             <button type="button" onclick="window.location.href='/profile'">Profile</button>
         </div>
