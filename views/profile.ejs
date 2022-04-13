@@ -35,7 +35,6 @@
                 console.log(base64String);
                 let preview = document.querySelector('#preview')
                 preview.src = reader.result
-
             }
             reader.readAsDataURL(file);
         }
@@ -83,7 +82,6 @@
                             src="<%= email.profilepicture %>" height="50" width="50" style="border-radius: 50%;" />
                     </h1>
                     <% } %>
-
                         <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Email: <%= email.email %>
                         </p>
                         <p style="font-family: 'Fredoka', sans-serif; margin-left: 15px;">Username: <%= email.username
@@ -98,7 +96,6 @@
                                 </p>
                         </p>
     </div>
-
     <div>
         <label for="myCheck">API Key:</label>
         <input type="checkbox" id="myCheck" onclick="myFunction()">
@@ -115,10 +112,8 @@
             </span></button>
         <div class="card2">
             <div id="myDIV" style="display: none;">
-
                 <% let here=email.newMessages %>
                     <% for(i=0; i < here.length; i++ ){ %>
-
                         <br>
                         <p id="cardText" style="font-family: 'Fredoka', sans-serif;">
                             <%= here[i] %>
@@ -127,6 +122,7 @@
             </div>
         </div>
     </div>
+    
     
     <% }) %>
         <div class="card" style="margin-left: 15px;">

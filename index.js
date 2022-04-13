@@ -481,9 +481,12 @@ app.post('/message/:to', async(req, res) => {
   if(session.userid){
     let array = await key.find({ email: req.params.to }).distinct('newMessages')
     let conversion = await key.find({ email: session.userid }).distinct('username')
+    let conversionEmailUsername = await key.find({ email: req.params.to }).distinct('username')
+    let sentMessage = await key.find({ email: session.userid }).distinct('message')
     console.log(conversion)
     let officialMessage = [`from: ` + conversion + req.body.message]
    await key.findOneAndUpdate({ email: req.params.to }, { newMessages: array.concat([`from ${conversion}: ` + req.body.message])}).then(() => console.log())
+   await key.findOneAndUpdate({ email: session.userid }, { message: sentMessage.concat(["To " + conversionEmailUsername + ": " + req.body.message ])})
    res.status(200).send({
      message:'Sent message'
    })
@@ -491,6 +494,7 @@ app.post('/message/:to', async(req, res) => {
     res.redirect('/login')
   }
 })
+
 
 
 
