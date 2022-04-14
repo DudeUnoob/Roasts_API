@@ -225,6 +225,11 @@
               </label>
               <input type="submit" name="sumbit" id="submit" value="Save">
         </form>
+        <% if(email.allowMessages == "true"){ %>
+             <h4 style="margin-left: 15px;">Allow messages from users is currently <b>on</b></h4>
+       <% } else if(email.allowMessages == "false" || email.allowMessages == null ||email.allowMessages == undefined  ){ %>
+            <h4 style="margin-left: 15px;">Allow messages from users is currently <b>off</b></h4>
+       <% } %>
     </div>
         <% }) %>
 
