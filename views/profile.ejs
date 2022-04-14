@@ -15,7 +15,67 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <title>Profile</title>
-    
+    <style>
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 60px;
+          height: 34px;
+        }
+        
+        .switch input { 
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+        
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 26px;
+          width: 26px;
+          left: 4px;
+          bottom: 4px;
+          background-color: white;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+        
+        input:checked + .slider {
+          background-color: #2196F3;
+        }
+        
+        input:focus + .slider {
+          box-shadow: 0 0 1px #2196F3;
+        }
+        
+        input:checked + .slider:before {
+          -webkit-transform: translateX(26px);
+          -ms-transform: translateX(26px);
+          transform: translateX(26px);
+        }
+        
+        /* Rounded sliders */
+        .slider.round {
+          border-radius: 34px;
+        }
+        
+        .slider.round:before {
+          border-radius: 50%;
+        }
+        </style>
     <script>let base64String = "";
   
         function imageUploaded() {
@@ -129,7 +189,6 @@
             <form action="/bio" method="POST" style="margin-left: 15px;">
                 <h2 id="main" style="font-family: 'Fredoka', sans-serif;">Bio</h2>
                 <p style="font-family: 'Fredoka', sans-serif;">Put a bio description!</p>
-
                 <input style="font-family: 'Fredoka', sans-serif;" type="text" class="box" id="bio" name="bio"
                     placeholder="Bio description" required />
                 <br>
@@ -154,9 +213,20 @@
                             <% } %>
                 </div>
             </div>
-        </div>
+        </div>  
+        
+        <div>
+            <h1>Allow Messages from Users</h1>
+        <form method="post" action="/ugh">
+            <label class="switch">
+                <input type="checkbox"  id="myButton" name="myButton" value="" >
+                <span class="slider round"></span>
+                
+              </label>
+              <input type="submit" name="sumbit" id="submit" value="Save">
+        </form>
+    </div>
         <% }) %>
-
 
         <script>
             function myFunction() {
@@ -196,6 +266,18 @@
                     noti.style.display = "none"
                 } else {
                     x.style.display = "none";
+                }
+            }
+            function checkChecked(){
+                let x = document.getElementById('myButton')
+                if(x.checked == true){
+                    console.log('im checked!!!')
+                    x.value = "true";
+                    console.log(x.value)
+                } else {
+                    console.log('im not checked :(')
+                    x.value = "false";
+                    console.log(x.value)
                 }
             }
         </script>

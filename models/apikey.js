@@ -14,6 +14,7 @@ let Schema = new mongoose.Schema({
     bio: String,
     message: Array,
     newMessages: Array,
+    allowMessages: String
 })
 
 module.exports = mongoose.model('key', Schema)

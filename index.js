@@ -297,6 +297,22 @@ app.get('/profile/settings', (req, res) => {
     })
   }
 })
+app.post('/ugh' , async(req, res) => {
+  session = req.session;
+  let here;
+  if(session.userid){
+  console.log(req.body.myButton)
+  if(req.body.myButton == ""){
+    await key.findOneAndUpdate({ email: session.userid }, { allowMessages: true })
+  } else if(req.body.myButton == undefined ){
+    await key.findOneAndUpdate({ email: session.userid}, { allowMessages: false})
+  }
+  
+  res.redirect('/profile')
+} else {
+  res.redirect('/login')
+}
+})
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
 //     cb(null, 'Images')
@@ -483,13 +499,22 @@ app.post('/message/:to', async(req, res) => {
     let conversion = await key.find({ email: session.userid }).distinct('username')
     let conversionEmailUsername = await key.find({ email: req.params.to }).distinct('username')
     let sentMessage = await key.find({ email: session.userid }).distinct('message')
+    let messageTo = await key.find({ email: req.params.to }).distinct('allowMessages')
+    
     console.log(conversion)
     let officialMessage = [`from: ` + conversion + req.body.message]
-   await key.findOneAndUpdate({ email: req.params.to }, { newMessages: array.concat([`from ${conversion}: ` + req.body.message])}).then(() => console.log())
-   await key.findOneAndUpdate({ email: session.userid }, { message: sentMessage.concat(["To " + conversionEmailUsername + ": " + req.body.message ])})
-   res.status(200).send({
-     message:'Sent message'
-   })
+    if(messageTo == "false"){
+      res.send({
+        message:'Sorry this user has disabled messages from users!'
+      })
+    } else {
+      await key.findOneAndUpdate({ email: req.params.to }, { newMessages: array.concat([`from ${conversion}: ` + req.body.message])}).then(() => console.log())
+      await key.findOneAndUpdate({ email: session.userid }, { message: sentMessage.concat(["To " + conversionEmailUsername + ": " + req.body.message ])})
+      res.status(200).send({
+        message:'Sent message'
+      })
+    }
+   
   } else {
     res.redirect('/login')
   }
