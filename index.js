@@ -16,7 +16,6 @@ const {GridFsStorage} = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const sessions = require('express-session')
 const multer = require('multer')
-const bcrypt = require('bcrypt')
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
